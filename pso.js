@@ -76,8 +76,8 @@ PSO.prototype.initialize = function () {
     }
 };
 
-PSO.prototype.reset = function(){
-    PSO.call(this, this.options);
+PSO.prototype.reset = function(options){
+    PSO.call(this, options || this.options);
 };
 
 PSO.prototype.step = function () {
