@@ -38,30 +38,6 @@ function PSO(options) {
     this.bestParticle = 0;
     this.initialize();
 }
-PSO.prototype.reconnect = function (){
-    var n, link;
-    for (var i = 0; i < this.size; i++) {
-        this.partBestFit[i] = Number.MAX_VALUE;
-        this.actualFitness[i] = Number.MAX_VALUE;
-    }
-    //create random particles
-    for (n = 0; n < this.size; n++) {
-        for (var d = 0; d < this.dimensions; d++) {
-            this.partBestPos[n][d] = this.positions[n][d];
-        }
-    }
-    //create random edges
-    for (n = 0; n < this.size; n++) {
-        this.edges[n] = [];
-        for (var e = 0; e < this.degree; e++) {
-            link = n;
-            while ( n==link || (this.edges[n].indexOf(link)>-1)){
-                link = Math.floor(this.size * Math.random());
-            }
-            this.edges[n].push(link);
-        }
-    }
-};
 
 PSO.prototype.rnd = function () {
     return Math.random() - 0.5;
@@ -84,7 +60,7 @@ PSO.prototype.initialize = function () {
             this.velocities[n].push(0);
         }
     }
-    //create random edges
+    //create random edges for distinct individuals
     for (n = 0; n < this.size; n++) {
         this.edges.push([]);
         for (var e = 0; e < this.degree; e++) {
@@ -106,7 +82,6 @@ PSO.prototype.evolve = function () {
 
 PSO.prototype.isSuccessful = function () {
     return this.criteria.call(this, this.result());
-
 };
 
 PSO.prototype.result = function () {
