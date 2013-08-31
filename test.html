@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PSO</title>
+    <script src='pso.js'></script>
+    <style>
+        #canvas {
+            border: 2px solid black;
+            margin: auto;
+            width: 300px;
+            height: 300px;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <p>The fitness is the distance to x=0, y=0; which is transformed to the center of the canvas for visualization.</p>
+    <canvas id="canvas" width="300px" height="300px"></canvas>
+    <script>
+
+        var pso = new PSO({
+            dimensions: 2
+        });
+
+        var iterations = 100;
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        var width = 300;
+        var size = width/50;
+
+        function nextStep(){
+            //pso.isSuccessful()
+            if (--iterations==0){
+                return;
+            }
+            ctx.fillStyle="#FFFFFF";
+            ctx.fillRect(0,0,width, width);
+            ctx.fillStyle="#000000";
+            ctx.beginPath();
+            pso.positions.map(function(x0y1){
+                ctx.arc(x0y1[0] * width/2 + width/2, x0y1[1] * width/2 + width/2, size/2, 0, 2*Math.PI, false);
+                ctx.fill();
+            });
+            ctx.closePath();
+            pso.evolve();
+            setTimeout(nextStep, 50);
+        }
+        nextStep();
+    </script>
+</body>
+</html>
