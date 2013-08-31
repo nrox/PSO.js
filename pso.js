@@ -5,6 +5,7 @@ function PSO(options) {
         size: 20,
         dimensions: 2,
         degree: 4,
+        steps: 10000,
         fitness: function (pos) {
             var sum = 0;
             for (var i = 0; i < pos.length; i++) {
@@ -36,6 +37,7 @@ function PSO(options) {
     this.edges = [];
     this.bestParticleInNeighs = [];
     this.bestParticle = 0;
+    this.curStep = 0;
     this.initialize();
 }
 
@@ -73,11 +75,18 @@ PSO.prototype.initialize = function () {
     }
 };
 
-PSO.prototype.evolve = function () {
+PSO.prototype.step = function () {
     this.actualFitness = this.positions.map(this.fitness, this);
     this.replaceParticlesBests();
     this.updateVelocities();
     this.updatePositions();
+};
+
+PSO.prototype.evolve = function () {
+    while (!this.isSuccessful() && (this.curStep++<this.steps)){
+        this.step();
+    }
+    return this.result();
 };
 
 PSO.prototype.isSuccessful = function () {

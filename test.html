@@ -29,7 +29,6 @@
         var size = width/50;
 
         function nextStep(){
-            //pso.isSuccessful()
             if (--iterations==0){
                 return;
             }
@@ -42,7 +41,8 @@
                 ctx.fill();
             });
             ctx.closePath();
-            pso.evolve();
+
+            pso.step();
             setTimeout(nextStep, 50);
         }
         nextStep();
