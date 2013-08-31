@@ -24,11 +24,12 @@ function PSO(options) {
     options || (options = {});
     for (var o in defaults){
         if (options.hasOwnProperty(o)){
-             this[o] = options[o];
         } else {
-             this[o] = defaults[o];
+            options[o] = defaults[o];
         }
+        this[o] = options[o];
     }
+    this.options = options;
     this.actualFitness = [];
     this.partBestFit = [];
     this.velocities = [];
@@ -75,6 +76,10 @@ PSO.prototype.initialize = function () {
     }
 };
 
+PSO.prototype.reset = function(){
+    PSO.call(this, this.options);
+};
+
 PSO.prototype.step = function () {
     this.actualFitness = this.positions.map(this.fitness, this);
     this.replaceParticlesBests();
@@ -83,6 +88,7 @@ PSO.prototype.step = function () {
 };
 
 PSO.prototype.evolve = function () {
+    this.curStep = 0;
     while (!this.isSuccessful() && (this.curStep++<this.steps)){
         this.step();
     }

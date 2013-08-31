@@ -14,15 +14,15 @@
     </style>
 </head>
 <body>
-    <p>The fitness is the distance to x=0, y=0; which is transformed to the center of the canvas for visualization.</p>
+    <p>The fitness is the distance to x=0, y=0; which is transformed to the center of the canvas for visualization. Each 100 steps the pso is reset.</p>
     <canvas id="canvas" width="300px" height="300px"></canvas>
     <script>
 
         var pso = new PSO({
             dimensions: 2
         });
-
-        var iterations = 100;
+        var maxIteration = 100;
+        var iterations = maxIteration;
         var canvas = document.getElementById('canvas');
         var ctx = canvas.getContext('2d');
         var width = 300;
@@ -30,7 +30,8 @@
 
         function nextStep(){
             if (--iterations==0){
-                return;
+                pso.reset();
+                iterations = maxIteration;
             }
             ctx.fillStyle="#FFFFFF";
             ctx.fillRect(0,0,width, width);
